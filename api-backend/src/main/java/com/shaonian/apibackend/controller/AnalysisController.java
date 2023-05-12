@@ -1,0 +1,58 @@
+package com.shaonian.apibackend.controller;
+
+
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.shaonian.apibackend.annotation.AuthCheck;
+import com.shaonian.apibackend.common.BaseResponse;
+import com.shaonian.apibackend.common.ErrorCode;
+import com.shaonian.apibackend.common.ResultUtils;
+import com.shaonian.apibackend.constant.UserConstant;
+import com.shaonian.apibackend.exception.BusinessException;
+import com.shaonian.apibackend.mapper.UserInterfaceInfoMapper;
+import com.shaonian.apibackend.service.InterfaceInfoService;
+import com.shaonian.apicommon.model.entity.InterfaceInfo;
+import com.shaonian.apicommon.model.entity.UserInterfaceInfo;
+import com.shaonian.apicommon.model.vo.InterfaceInfoVo;
+import org.springframework.beans.BeanUtils;
+import org.springframework.util.CollectionUtils;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import javax.annotation.Resource;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
+@RestController
+@RequestMapping("/analysis")
+public class AnalysisController {
+
+    @Resource
+    private UserInterfaceInfoMapper userInterfaceInfoMapper;
+
+    @Resource
+    private InterfaceInfoService interfaceInfoService;
+
+    @GetMapping("/top/interface/invoke")
+    @AuthCheck(mustRole = UserConstant.ADMIN_ROLE)
+    public BaseResponse<List<InterfaceInfoVo>> listTopInvokeInterfaceInfo() {
+        List<UserInterfaceInfo> userInterfaceInfoList = userInterfaceInfoMapper.listTopInvokeInterfaceInfo(3);
+        Map<Long, List<UserInterfaceInfo>> interfaceInfoIdObjMap = userInterfaceInfoList.stream()
+                .collect(Collectors.groupingBy(UserInterfaceInfo::getInterfaceInfoId));
+        QueryWrapper<InterfaceInfo> queryWrapper = new QueryWrapper<>();
+        queryWrapper.in("id", interfaceInfoIdObjMap.keySet());
+        List<InterfaceInfo> list = interfaceInfoService.list(queryWrapper);
+        if (CollectionUtils.isEmpty(list)) {
+            throw new BusinessException(ErrorCode.SYSTEM_ERROR);
+        }
+        List<InterfaceInfoVo> interfaceInfoVOList = list.stream().map(interfaceInfo -> {
+            InterfaceInfoVo interfaceInfoVO = new InterfaceInfoVo();
+            BeanUtils.copyProperties(interfaceInfo, interfaceInfoVO);
+            int totalNum = interfaceInfoIdObjMap.get(interfaceInfo.getId()).get(0).getTotalNum();
+            interfaceInfoVO.setTotalNum(totalNum);
+            return interfaceInfoVO;
+        }).collect(Collectors.toList());
+        return ResultUtils.success(interfaceInfoVOList);
+    }
+}

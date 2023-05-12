@@ -1,0 +1,13 @@
+spring:
+  application:
+    name: api-interface
+
+server:
+  port: 8123
+  servlet:
+    context-path: /api
+api:
+  client:
+    access-kye: b8f7fbcb53784e836c40137f2a904057
+    secret-key: 1f7a33c16cd259c6370a02da10a7a71
+
