@@ -92,8 +92,6 @@ public class CustomGlobalFilter implements GlobalFilter, Ordered {
         if (invokeUser == null) {
             return handleNoAuth(response);
         }
-
-
         //判断随机数是否存在
         Boolean flag = stringRedisTemplate.opsForSet().isMember(RANDOM, nonce);
         if (flag) {

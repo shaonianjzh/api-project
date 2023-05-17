@@ -10,7 +10,17 @@ spring:
           uri: http://localhost:8123
           predicates:
             - Path=/api/**
-
+          filters:
+            - name: RequestRateLimiter
+              args:
+                # 令牌桶每秒填充平均速率, 允许用户每秒处理多少个请求。
+                redis-rate-limiter.replenishRate: 10
+                # 令牌桶的容量，允许在1s内完成的最大请求数。
+                redis-rate-limiter.burstCapacity: 10
+                # 使用SpEL表达式从Spring容器中获取Bean对象, 查看RateLimiteConfig实现类中的方法名
+                key-resolver: "#{@pathKeyResolver}"
+                #key-resolver: "#{@ipKeyResolver}"
+                #key-resolver: "#{@userKeyResolver}"
 dubbo:
   application:
     name: dubbo-consumer

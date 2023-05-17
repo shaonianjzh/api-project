@@ -4,7 +4,7 @@ spring:
   application:
     name: api-gateway
   profiles:
-    active: prod
+    active: dev
   cloud:
     gateway:
       globalcors: # 全局的跨域处理
