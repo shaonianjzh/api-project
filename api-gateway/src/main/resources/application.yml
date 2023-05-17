@@ -24,6 +24,6 @@ spring:
             maxAge: 360000 # 这次跨域检测的有效期
 
       default-filters:
-        - AddResponseHeader=source, shaonian
+        - AddRequestHeader=key, shaonian
   main:
     web-application-type: reactive

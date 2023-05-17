@@ -2,18 +2,26 @@ package com.shaonian.apiinterface.controller;
 
 import cn.hutool.http.HttpRequest;
 import cn.hutool.http.HttpResponse;
+import com.shaonian.apiclientsdk.annotation.CheckIdentity;
 import com.shaonian.apiclientsdk.model.User;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
+/**
+ * @author 少年
+ */
 @RestController
 @RequestMapping("/")
 public class NameController {
 
+
+    @CheckIdentity
     @GetMapping("/getNameByGet")
-    public String getNameByGet(String name ){
-         return "GET 你的名字是"+name;
+    public String getNameByGet(String name, HttpServletRequest request, HttpServletResponse response){
+        String key = request.getHeader("key");
+        return "GET 你的名字是"+name;
     }
 
     @PostMapping("/getNameByPost")
