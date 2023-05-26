@@ -13,6 +13,7 @@ import java.util.Map;
 
 import static com.shaonian.apiclientsdk.util.SignUtils.getSign;
 
+
 /**
  * 调用第三方的接口的客户端
  */
@@ -58,7 +59,7 @@ public class ApiClient {
         map.put("nonce", RandomUtil.randomNumbers(5));
         map.put("body",body);
         map.put("timestamp",String.valueOf(System.currentTimeMillis()/1000));
-        map.put("sign",getSign(body,secretKey));
+        map.put("sign", getSign(body,secretKey));
         return map;
     }
 
@@ -85,5 +86,24 @@ public class ApiClient {
                 .execute().body();
     }
 
+    public String getLoveWords(){
+        return HttpRequest.get(url)
+                .addHeaders(getHashMap(""))
+                .execute().body();
+    }
+
+    public String getRandomPassword(Integer length){
+        return HttpRequest.get(url)
+                .form("length",length)
+                .addHeaders(getHashMap(String.valueOf(length)))
+                .execute().body();
+    }
+
+    public String getZodiacSign(String age){
+        return HttpRequest.get(url)
+                .form("age",age)
+                .addHeaders(getHashMap(age))
+                .execute().body();
+    }
 }
 

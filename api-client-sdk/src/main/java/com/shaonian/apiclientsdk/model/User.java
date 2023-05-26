@@ -5,6 +5,7 @@ import lombok.Data;
 
 /**
  * 用户
+ * @author 少年
  */
 @Data
 public class User {

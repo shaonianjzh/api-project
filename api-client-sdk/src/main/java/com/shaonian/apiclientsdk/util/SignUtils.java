@@ -3,6 +3,9 @@ package com.shaonian.apiclientsdk.util;
 import cn.hutool.crypto.digest.DigestAlgorithm;
 import cn.hutool.crypto.digest.Digester;
 
+/**
+ * @author 少年
+ */
 public class SignUtils {
 
     /**

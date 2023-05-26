@@ -4,8 +4,11 @@ import cn.hutool.http.HttpRequest;
 import cn.hutool.http.HttpResponse;
 import com.shaonian.apiclientsdk.annotation.CheckIdentity;
 import com.shaonian.apiclientsdk.model.User;
+import com.shaonian.apicommon.model.entity.LoveWords;
+import com.shaonian.apiinterface.service.LoveWordsService;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -16,6 +19,9 @@ import javax.servlet.http.HttpServletResponse;
 @RequestMapping("/")
 public class NameController {
 
+
+    @Resource
+    private LoveWordsService loveWordsService;
 
     @CheckIdentity
     @GetMapping("/getNameByGet")
@@ -49,4 +55,27 @@ public class NameController {
         System.out.println("getChickenSoup");
         return execute.body();
     }
+
+    @GetMapping("/getLoveWords")
+    public LoveWords getLoveWords(){
+        return loveWordsService.getLoveWordsRandom();
+    }
+
+    @GetMapping("/getRandomPassword")
+    public String getRandomPassword(@RequestParam Integer length){
+        String body = HttpRequest.get("https://v.api.aa1.cn/api/api-mima/mima.php")
+                .form("msg",length)
+                .execute().body();
+        return body;
+    }
+
+
+    @GetMapping("/getZodiacSign")
+    public String getZodiacSign(@RequestParam String age){
+        String body = HttpRequest.get("https://zj.v.api.aa1.cn/api/Age-calculation/")
+                .form("birthday",age)
+                .execute().body();
+        return body;
+    }
+
 }
