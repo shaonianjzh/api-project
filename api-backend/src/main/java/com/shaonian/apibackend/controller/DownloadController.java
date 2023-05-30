@@ -26,7 +26,8 @@ public class DownloadController {
     @Autowired
     private UserService userService;
 
-    private static final String SDK_HELP_ADDRESS = "/root/api-project/api-client-sdk.zip";
+//    private static final String SDK_HELP_ADDRESS = "/root/api-project/api-client-sdk.zip";
+    private static final String SDK_HELP_ADDRESS = "D:\\BaiduNetdiskWorkspace\\code\\ideacode\\springcloudcode\\api-project\\api-client-sdk\\target\\api-client-sdk.zip";
 
 
     @GetMapping("/getSDK")
@@ -46,10 +47,9 @@ public class DownloadController {
         //创建资源对象,将输入流加载其中
         InputStreamResource resource = new InputStreamResource(is);
 
-        //设置响应头,指定文件名称
         HttpHeaders headers = new HttpHeaders();
         headers.add("Content-Disposition", String.format("attachment; filename=%s", file.getName()));
-
+//        headers.add("Content-Type","application/octet-stream");
         //返回文件下载响应
         return ResponseEntity.ok().headers(headers).contentLength(file.length()).body(resource);
     }

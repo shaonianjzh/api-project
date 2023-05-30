@@ -111,7 +111,7 @@ public class CustomGlobalFilter implements GlobalFilter, Ordered {
 
         //从数据库中查出 secretKey，进行签名校验
         String secretKey = invokeUser.getSecretKey();
-        String serverSign = SignUtils.getSign(body, secretKey);
+        String serverSign = SignUtils.getSign(body+nonce+timestamp, secretKey);
         if (sign == null || !sign.equals(serverSign)) {
             return handleNoAuth(response);
         }
