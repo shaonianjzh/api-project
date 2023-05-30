@@ -92,29 +92,31 @@ public class CustomGlobalFilter implements GlobalFilter, Ordered {
         if (invokeUser == null) {
             return handleNoAuth(response);
         }
-        //判断随机数是否存在
+
+        //从数据库中查出 secretKey，先进行签名校验，防止篡改随机数和时间戳。
+        String secretKey = invokeUser.getSecretKey();
+        String serverSign = SignUtils.getSign(body+nonce+timestamp, secretKey);
+        if (sign == null || !sign.equals(serverSign)) {
+            return handleNoAuth(response);
+        }
+
+        //然后判断随机数是否存在
         Boolean flag = stringRedisTemplate.opsForSet().isMember(RANDOM, nonce);
         if (flag) {
             return handleNoAuth(response);
         }
+
         //记录随机数，防止请求重放(配合时间戳定时清理)
         stringRedisTemplate.opsForSet().add(RANDOM, nonce);
         stringRedisTemplate.expire(RANDOM, 60, TimeUnit.SECONDS);
 
-
-        // 时间和当前时间不能超过 1 分钟，
+        //然后判断时间和当前时间不能超过 1 分钟，
         Long currentTime = System.currentTimeMillis() / 1000;
         final Long ONE_MINUTES = 60 * 1L;
         if ((currentTime - Long.parseLong(timestamp)) >= ONE_MINUTES) {
             return handleNoAuth(response);
         }
 
-        //从数据库中查出 secretKey，进行签名校验
-        String secretKey = invokeUser.getSecretKey();
-        String serverSign = SignUtils.getSign(body+nonce+timestamp, secretKey);
-        if (sign == null || !sign.equals(serverSign)) {
-            return handleNoAuth(response);
-        }
         // 4. 请求的模拟接口是否存在，以及请求方法是否匹配
         InterfaceInfo interfaceInfo = null;
         try {
