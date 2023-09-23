@@ -5,23 +5,24 @@
 <mapper namespace="com.shaonian.apibackend.mapper.InterfaceInfoMapper">
 
     <resultMap id="BaseResultMap" type="com.shaonian.apicommon.model.entity.InterfaceInfo">
-            <id property="id" column="id" jdbcType="BIGINT"/>
-            <result property="name" column="name" jdbcType="VARCHAR"/>
-            <result property="description" column="description" jdbcType="VARCHAR"/>
-            <result property="url" column="url" jdbcType="VARCHAR"/>
-            <result property="requestParams" column="requestParams" jdbcType="VARCHAR"/>
-            <result property="requestHeader" column="requestHeader" jdbcType="VARCHAR"/>
-            <result property="responseHeader" column="responseHeader" jdbcType="VARCHAR"/>
-            <result property="status" column="status" jdbcType="INTEGER"/>
-            <result property="method" column="method" jdbcType="VARCHAR"/>
-            <result property="userId" column="userId" jdbcType="BIGINT"/>
-            <result property="createTime" column="createTime" jdbcType="TIMESTAMP"/>
-            <result property="updateTime" column="updateTime" jdbcType="TIMESTAMP"/>
-            <result property="isDelete" column="isDelete" jdbcType="TINYINT"/>
+        <id property="id" column="id" jdbcType="BIGINT"/>
+        <result property="name" column="name" jdbcType="VARCHAR"/>
+        <result property="description" column="description" jdbcType="VARCHAR"/>
+        <result property="url" column="url" jdbcType="VARCHAR"/>
+        <result property="requestParams" column="requestParams" jdbcType="VARCHAR"/>
+        <result property="requestHeader" column="requestHeader" jdbcType="VARCHAR"/>
+        <result property="responseHeader" column="responseHeader" jdbcType="VARCHAR"/>
+        <result property="status" column="status" jdbcType="INTEGER"/>
+        <result property="method" column="method" jdbcType="VARCHAR"/>
+        <result property="userId" column="userId" jdbcType="BIGINT"/>
+        <result property="createTime" column="createTime" jdbcType="TIMESTAMP"/>
+        <result property="updateTime" column="updateTime" jdbcType="TIMESTAMP"/>
+        <result property="isDelete" column="isDelete" jdbcType="TINYINT"/>
     </resultMap>
 
     <sql id="Base_Column_List">
-        id,name,description,
+        id
+        ,name,description,
         url,requestParams,requestHeader,
         responseHeader,status,method,
         userId,createTime,updateTime,

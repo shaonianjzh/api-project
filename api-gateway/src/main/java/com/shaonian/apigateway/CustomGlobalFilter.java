@@ -105,7 +105,7 @@ public class CustomGlobalFilter implements GlobalFilter, Ordered {
         if (flag) {
             return handleNoAuth(response);
         }
-
+        String a = "asdf";
         //记录随机数，防止请求重放(配合时间戳定时清理)
         stringRedisTemplate.opsForSet().add(RANDOM, nonce);
         stringRedisTemplate.expire(RANDOM, 60, TimeUnit.SECONDS);
