@@ -1,0 +1,25 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/api_project?useUnicode=true0&characterEncoding=UTF-8&serverTimezone=UTC&useSSL=false&allowPublicKeyRetrieval=true
+    username: root
+    password: 123456
+
+  redis:
+    port: 6379
+    host: localhost
+    database: 0
+
+dubbo:
+  application:
+    name: dubbo-provider
+  protocol:
+    port: 20881
+    name: dubbo
+  registry:
+    # address: spring-cloud://localhost
+    address: localhost:8848
+  consumer:
+    check: false #dubbo默认有启动检查
+    retries: 0 #dubbo内置的重试机制
+
